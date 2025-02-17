@@ -1,4 +1,4 @@
-# StudentManagement
+# GradeMaster
 学生管理システム
 
 ## 概要
