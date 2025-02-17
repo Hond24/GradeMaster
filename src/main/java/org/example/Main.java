@@ -13,7 +13,7 @@ public class Main {
       System.out.println("1. 学生の追加");
       System.out.println("2. 学生の削除");
       System.out.println("3. 全科目の点数を更新");
-      System.out.println("4. 平均点の計算");
+      System.out.println("4. 教科ごとの平均点を計算");
       System.out.println("5. 学生一覧の表示");
       System.out.println("6. 終了");
       System.out.print("選択してください (1-6): ");
@@ -36,11 +36,11 @@ public class Main {
           String name = scanner.nextLine();
           manager.updateScores(name, scanner);
         }
-        case 4 -> manager.printAverageScore(); // 平均点の計算
+        case 4 -> manager.printSubjectAverages(); // 教科ごとの平均点を計算
         case 5 -> manager.printStudents(); // 学生一覧の表示
         case 6 -> { // 終了
           running = false;
-          System.out.println("お疲れ様でした！");
+          System.out.println("プログラムを終了します。");
         }
         default -> System.out.println("無効な選択です。もう一度入力してください。");
       }

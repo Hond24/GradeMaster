@@ -2,8 +2,9 @@ package org.example;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.OptionalDouble;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.HashMap;
 
 public class StudentManager {
   private final List<Student> students = new ArrayList<>();
@@ -15,7 +16,6 @@ public class StudentManager {
     students.add(student);
     System.out.println("学生が追加されました。");
 
-    // 追加時に点数入力
     System.out.println("各科目の点数を入力してください（スキップする場合は -1 を入力）。");
     for (String subject : subjects) {
       System.out.print(subject + " の点数: ");
@@ -53,18 +53,35 @@ public class StudentManager {
     System.out.println("指定された名前が見つかりませんでした。");
   }
 
-  // 平均点の計算
-  public void printAverageScore() {
+  // 科目ごとの平均点を計算
+  public void printSubjectAverages() {
     if (students.isEmpty()) {
       System.out.println("学生が登録されていません。");
       return;
     }
 
-    OptionalDouble average = students.stream()
-        .flatMapToDouble(s -> s.getSubjects().values().stream().mapToDouble(Integer::doubleValue))
-        .average();
+    Map<String, Integer> subjectTotal = new HashMap<>();
+    Map<String, Integer> subjectCount = new HashMap<>();
 
-    System.out.println("全学生の平均点: " + (average.isPresent() ? average.getAsDouble() : 0.0));
+    // 各学生の点数を集計
+    for (Student student : students) {
+      for (String subject : student.getSubjects().keySet()) {
+        int score = student.getScore(subject);
+        subjectTotal.put(subject, subjectTotal.getOrDefault(subject, 0) + score);
+        subjectCount.put(subject, subjectCount.getOrDefault(subject, 0) + 1);
+      }
+    }
+
+    // 平均点を計算・表示
+    System.out.println("\n各教科の平均点:");
+    for (String subject : subjects) {
+      if (subjectCount.containsKey(subject)) {
+        double average = (double) subjectTotal.get(subject) / subjectCount.get(subject);
+        System.out.printf("%s: %.2f\n", subject, average);
+      } else {
+        System.out.println(subject + ": データなし");
+      }
+    }
   }
 
   // 学生一覧を表示
